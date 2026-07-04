@@ -578,8 +578,10 @@ function App() {
                 </div>
               </div>
               <div className="brand-marquee">
-                {[...brands.slice(0, 10), ...brands.slice(0, 10)].map((brand, index) => (
-                  <span key={`${brand._id}-${index}`}>{brand.name}</span>
+                {brands.slice(0, 10).map((brand) => (
+                  <span key={brand._id} onClick={() => selectSuggestion(brand.name)} role="button" tabIndex={0}>
+                    {brand.name}
+                  </span>
                 ))}
               </div>
             </motion.section>
