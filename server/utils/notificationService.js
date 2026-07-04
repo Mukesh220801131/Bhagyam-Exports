@@ -1,5 +1,6 @@
 const Notification = require("../models/Notification");
 const { env } = require("../config/env");
+const nodemailer = require("nodemailer");
 
 const statusCopy = {
   Confirmed: {
@@ -174,37 +175,71 @@ const sendEmail = async ({ to, subject, html, text }) => {
     return { provider: "email", status: "skipped", error: "Missing recipient email" };
   }
 
-  if (!env.emailApiUrl || !env.emailFrom) {
-    console.log(`\n==================================================`);
-    console.log(`[SIMULATED EMAIL NOTIFICATION]`);
-    console.log(`To: ${to}`);
-    console.log(`Subject: ${subject}`);
-    console.log(`Content:\n${text}`);
-    console.log(`==================================================\n`);
-    return { provider: "email", status: "skipped", error: "Email provider is not configured (Logged to console)" };
-  }
+  // 1. SMTP configuration
+  if (env.smtpHost && env.smtpUser && env.smtpPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: env.smtpHost,
+        port: env.smtpPort,
+        secure: env.smtpPort === 465,
+        auth: {
+          user: env.smtpUser,
+          pass: env.smtpPass,
+        },
+      });
 
-  try {
-    const body = await postJson(
-      env.emailApiUrl,
-      {
-        from: env.emailFrom,
-        to: [to],
+      const info = await transporter.sendMail({
+        from: env.emailFrom || env.smtpUser,
+        to,
         subject,
-        html,
         text,
-      },
-      apiHeaders(env.emailApiKey)
-    );
+        html,
+      });
 
-    return {
-      provider: "email",
-      status: "sent",
-      responseId: body.id || body.messageId || body.message_id || "",
-    };
-  } catch (error) {
-    return { provider: "email", status: "failed", error: error.message };
+      return {
+        provider: "email",
+        status: "sent",
+        responseId: info.messageId || "",
+      };
+    } catch (error) {
+      console.error("[SMTP EMAIL ERROR]:", error);
+      return { provider: "email", status: "failed", error: `SMTP failed: ${error.message}` };
+    }
   }
+
+  // 2. Email REST API configuration
+  if (env.emailApiUrl && env.emailFrom) {
+    try {
+      const body = await postJson(
+        env.emailApiUrl,
+        {
+          from: env.emailFrom,
+          to: [to],
+          subject,
+          html,
+          text,
+        },
+        apiHeaders(env.emailApiKey)
+      );
+
+      return {
+        provider: "email",
+        status: "sent",
+        responseId: body.id || body.messageId || body.message_id || "",
+      };
+    } catch (error) {
+      return { provider: "email", status: "failed", error: error.message };
+    }
+  }
+
+  // 3. Fallback simulated log
+  console.log(`\n==================================================`);
+  console.log(`[SIMULATED EMAIL NOTIFICATION]`);
+  console.log(`To: ${to}`);
+  console.log(`Subject: ${subject}`);
+  console.log(`Content:\n${text}`);
+  console.log(`==================================================\n`);
+  return { provider: "email", status: "skipped", error: "Email SMTP/API is not configured (Logged to console)" };
 };
 
 const buildWhatsAppPayload = (to, message, templateParams = []) => {

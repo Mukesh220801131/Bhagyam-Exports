@@ -67,6 +67,10 @@ const env = {
   smsApiUrl: process.env.SMS_API_URL || "",
   smsApiKey: process.env.SMS_API_KEY || "",
   smsFrom: process.env.SMS_FROM || "FashionStore",
+  smtpHost: process.env.SMTP_HOST || "",
+  smtpPort: Number(process.env.SMTP_PORT) || 587,
+  smtpUser: process.env.SMTP_USER || "",
+  smtpPass: process.env.SMTP_PASS || "",
 };
 
 module.exports = { env, requiredEnvVars };
