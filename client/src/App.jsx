@@ -1012,24 +1012,31 @@ function App() {
           </div>
 
           <div className="topbar-actions">
-            <button
+            <motion.button
               className="icon-button theme-toggle-btn"
               onClick={() => setIsNight(!isNight)}
               type="button"
+              whileTap={{ scale: 0.85 }}
               title={isNight ? "Switch to Day Mode" : "Switch to Night Mode"}
               aria-label="Toggle Theme"
             >
-              {isNight ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
-            </button>
+              <motion.span
+                animate={{ rotate: isNight ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 220, damping: 12 }}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                {isNight ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
+              </motion.span>
+            </motion.button>
             <Link className="icon-button" to="/" aria-label="Home"><FiHome aria-hidden="true" /></Link>
             <Link className="icon-button" to="/dashboard" aria-label="Dashboard"><FiUser aria-hidden="true" /></Link>
             <Link className="icon-button wishlist-link" to="/wishlist" aria-label="Wishlist">
               <FiHeart aria-hidden="true" />
-              {wishlistItems.length > 0 && <span className="cart-count">{wishlistItems.length}</span>}
+              {wishlistItems.length > 0 && <span className="cart-count" key={wishlistItems.length}>{wishlistItems.length}</span>}
             </Link>
             <Link to="/cart" className="icon-button cart-link" aria-label="View cart">
               <FiShoppingBag aria-hidden="true" />
-              {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+              {cartCount > 0 && <span className="cart-count" key={cartCount}>{cartCount}</span>}
             </Link>
           </div>
         </header>
@@ -1164,14 +1171,16 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
           />
         </div>
       </Link>
-      <button
+      <motion.button
         className={isWishlisted ? "floating-wishlist active" : "floating-wishlist"}
         onClick={() => onToggleWishlist(product)}
         type="button"
+        whileHover={{ scale: 1.12 }}
+        whileTap={{ scale: 0.8 }}
         aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
       >
         <FiHeart aria-hidden="true" />
-      </button>
+      </motion.button>
       <div className="product-info">
         <div>
           <span className="product-brand">{product.brand}</span>
@@ -1209,10 +1218,16 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
             </button>
           </div>
         ) : (
-          <button className="cart-button" type="button" onClick={() => onAddToCart(product)}>
+          <motion.button
+            className="cart-button"
+            type="button"
+            onClick={() => onAddToCart(product)}
+            whileHover={{ scale: 1.02, translateY: -1 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <FiShoppingBag aria-hidden="true" />
             Add to cart
-          </button>
+          </motion.button>
         )}
       </div>
     </motion.article>
