@@ -56,7 +56,7 @@ const brandSchema = new mongoose.Schema(
 );
 
 // Auto-generate slug before saving
-brandSchema.pre("save", function (next) {
+brandSchema.pre("save", function () {
   if (this.isModified("name")) {
     this.slug = this.name
       .toLowerCase()
@@ -64,7 +64,6 @@ brandSchema.pre("save", function (next) {
       .replace(/\s+/g, "-")
       .replace(/[^\w-]/g, "");
   }
-  next();
 });
 
 module.exports = mongoose.model("Brand", brandSchema);
