@@ -372,6 +372,7 @@ function App() {
 
   const HomePage = () => {
     const [activeHero, setActiveHero] = useState(0);
+    const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const heroSlides = products.slice(0, 4).length
       ? products.slice(0, 4)
       : [{ _id: "hero", name: "Premium collection", brand: "Bhagyam Exports", images: [heroImage] }];
@@ -556,23 +557,40 @@ function App() {
           </div>
 
           <div className="products-layout-wrapper">
-            <aside className="products-sidebar-filters">
+            {isMobileFiltersOpen && (
+              <div
+                className="filter-drawer-overlay"
+                onClick={() => setIsMobileFiltersOpen(false)}
+              />
+            )}
+            <aside className={`products-sidebar-filters ${isMobileFiltersOpen ? "open" : ""}`}>
               <div className="sidebar-filter-section">
                 <div className="sidebar-filter-header">
                   <h3>Filters</h3>
-                  {(selectedBrand !== "All" || selectedPriceRange !== "All" || minRating !== 0 || sortBy !== "default") && (
+                  <div className="sidebar-header-actions">
+                    {(selectedBrand !== "All" || selectedPriceRange !== "All" || minRating !== 0 || sortBy !== "default") && (
+                      <button
+                        className="sidebar-clear-btn"
+                        onClick={() => {
+                          setSelectedBrand("All");
+                          setSelectedPriceRange("All");
+                          setMinRating(0);
+                          setSortBy("default");
+                          setIsMobileFiltersOpen(false);
+                        }}
+                      >
+                        Clear All
+                      </button>
+                    )}
                     <button
-                      className="sidebar-clear-btn"
-                      onClick={() => {
-                        setSelectedBrand("All");
-                        setSelectedPriceRange("All");
-                        setMinRating(0);
-                        setSortBy("default");
-                      }}
+                      className="sidebar-close-btn"
+                      onClick={() => setIsMobileFiltersOpen(false)}
+                      type="button"
+                      aria-label="Close filters"
                     >
-                      Clear All
+                      ✕
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
 
@@ -581,7 +599,10 @@ function App() {
                 <div className="sidebar-filter-links">
                   <button
                     className={selectedBrand === "All" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedBrand("All")}
+                    onClick={() => {
+                      setSelectedBrand("All");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     All Brands
@@ -590,7 +611,10 @@ function App() {
                     <button
                       key={brand}
                       className={selectedBrand === brand ? "filter-link active" : "filter-link"}
-                      onClick={() => setSelectedBrand(brand)}
+                      onClick={() => {
+                        setSelectedBrand(brand);
+                        setIsMobileFiltersOpen(false);
+                      }}
                       type="button"
                     >
                       {brand}
@@ -604,35 +628,50 @@ function App() {
                 <div className="sidebar-filter-links">
                   <button
                     className={selectedPriceRange === "All" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedPriceRange("All")}
+                    onClick={() => {
+                      setSelectedPriceRange("All");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     Any Price
                   </button>
                   <button
                     className={selectedPriceRange === "under-500" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedPriceRange("under-500")}
+                    onClick={() => {
+                      setSelectedPriceRange("under-500");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     Under Rs. 500
                   </button>
                   <button
                     className={selectedPriceRange === "500-1000" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedPriceRange("500-1000")}
+                    onClick={() => {
+                      setSelectedPriceRange("500-1000");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     Rs. 500 - Rs. 1,000
                   </button>
                   <button
                     className={selectedPriceRange === "1000-2000" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedPriceRange("1000-2000")}
+                    onClick={() => {
+                      setSelectedPriceRange("1000-2000");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     Rs. 1,000 - Rs. 2,000
                   </button>
                   <button
                     className={selectedPriceRange === "above-2000" ? "filter-link active" : "filter-link"}
-                    onClick={() => setSelectedPriceRange("above-2000")}
+                    onClick={() => {
+                      setSelectedPriceRange("above-2000");
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     Rs. 2,000 & Above
@@ -645,7 +684,10 @@ function App() {
                 <div className="sidebar-filter-links">
                   <button
                     className={minRating === 0 ? "filter-link active" : "filter-link"}
-                    onClick={() => setMinRating(0)}
+                    onClick={() => {
+                      setMinRating(0);
+                      setIsMobileFiltersOpen(false);
+                    }}
                     type="button"
                   >
                     All Reviews
@@ -654,7 +696,10 @@ function App() {
                     <button
                       key={stars}
                       className={minRating === stars ? "filter-link rating-link active" : "filter-link rating-link"}
-                      onClick={() => setMinRating(stars)}
+                      onClick={() => {
+                        setMinRating(stars);
+                        setIsMobileFiltersOpen(false);
+                      }}
                       type="button"
                     >
                       <span className="stars-wrapper">
@@ -671,6 +716,13 @@ function App() {
 
             <div className="products-main-content">
               <div className="products-toolbar">
+                <button
+                  className="mobile-filter-trigger-btn"
+                  onClick={() => setIsMobileFiltersOpen(true)}
+                  type="button"
+                >
+                  <FiSliders /> Filters
+                </button>
                 <span className="styles-count">{visibleProducts.length} style(s) found</span>
                 <div className="toolbar-sort">
                   <label htmlFor="sort-select">Sort by:</label>
