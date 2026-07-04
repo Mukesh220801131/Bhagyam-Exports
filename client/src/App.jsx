@@ -473,7 +473,14 @@ function App() {
         </section>
 
 
-        <section className="content-section" id="categories">
+        <motion.section
+          className="content-section"
+          id="categories"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="section-heading">
             <div>
               <p className="eyebrow">Top categories</p>
@@ -519,7 +526,7 @@ function App() {
               </button>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {activeCategory === "All" && (
           <>
@@ -557,7 +564,13 @@ function App() {
               onUpdateQuantity={updateQuantity}
             />
 
-            <section className="content-section brand-section">
+            <motion.section
+              className="content-section brand-section"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="section-heading">
                 <div>
                   <p className="eyebrow">Shop by brand</p>
@@ -569,11 +582,18 @@ function App() {
                   <span key={`${brand._id}-${index}`}>{brand.name}</span>
                 ))}
               </div>
-            </section>
+            </motion.section>
           </>
         )}
 
-        <section className="content-section" id="products">
+        <motion.section
+          className="content-section"
+          id="products"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="section-heading products-heading">
             <div>
               <p className="eyebrow">Fresh drops</p>
@@ -841,7 +861,7 @@ function App() {
               )}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <ProductRail
           emptyFallback={flashDeals.length ? flashDeals : products.slice(12, 20)}
@@ -855,7 +875,13 @@ function App() {
           onUpdateQuantity={updateQuantity}
         />
 
-        <section className="social-proof-section">
+        <motion.section
+          className="social-proof-section"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="testimonial-card">
             <FiStar aria-hidden="true" />
             <strong>4.7 average rating</strong>
@@ -880,7 +906,7 @@ function App() {
               <button type="submit">Subscribe</button>
             </div>
           </form>
-        </section>
+        </motion.section>
 
         <section className="delivery-band">
           <FiTruck aria-hidden="true" />
