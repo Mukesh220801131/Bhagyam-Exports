@@ -491,21 +491,19 @@ function App() {
             ))}
           </div>
 
-          {activeCategory === "All" && (
-            <div className="category-spotlight-grid">
-              {categories.slice(0, 6).map((category) => (
-                <button
-                  className="category-spotlight"
-                  key={category._id}
-                  onClick={() => setActiveCategory(category.name)}
-                  type="button"
-                >
-                  <img src={category.image || heroImage} alt={category.name} loading="lazy" />
-                  <span>{category.name}</span>
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="category-spotlight-grid">
+            {categories.slice(0, 6).map((category) => (
+              <button
+                className="category-spotlight"
+                key={category._id}
+                onClick={() => setActiveCategory(category.name)}
+                type="button"
+              >
+                <img src={category.image || heroImage} alt={category.name} loading="lazy" />
+                <span>{category.name}</span>
+              </button>
+            ))}
+          </div>
         </section>
 
         {activeCategory === "All" && (
@@ -1001,7 +999,6 @@ function App() {
               aria-label="Toggle Theme"
             >
               {isNight ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
-              <span className="theme-toggle-text">{isNight ? "Day" : "Night"}</span>
             </button>
             <Link className="icon-button" to="/" aria-label="Home"><FiHome aria-hidden="true" /></Link>
             <Link className="icon-button" to="/dashboard" aria-label="Dashboard"><FiUser aria-hidden="true" /></Link>

@@ -3356,29 +3356,7 @@
 
 /* Theme Toggle Button Styling */
 .theme-toggle-btn {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 6px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 6px 12px;
-  color: #475569;
-  font-size: 13px;
-  font-weight: 750;
   cursor: pointer;
-}
-
-.theme-toggle-btn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.theme-toggle-text {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 /* Night Theme Colors and Styles */
