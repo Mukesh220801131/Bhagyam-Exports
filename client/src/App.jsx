@@ -454,24 +454,6 @@ function App() {
           </div>
         </section>
 
-        <section className="stats-strip" aria-label="Store highlights">
-          <div>
-            <strong>{products.length}</strong>
-            <span>Products</span>
-          </div>
-          <div>
-            <strong>{categories.length}</strong>
-            <span>Categories</span>
-          </div>
-          <div>
-            <strong>{brands.length}</strong>
-            <span>Brands</span>
-          </div>
-          <div>
-            <strong>{totalStock}</strong>
-            <span>Stock ready</span>
-          </div>
-        </section>
 
         <section className="content-section" id="categories">
           <div className="section-heading">
