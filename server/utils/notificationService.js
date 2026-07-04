@@ -175,6 +175,35 @@ const sendEmail = async ({ to, subject, html, text }) => {
     return { provider: "email", status: "skipped", error: "Missing recipient email" };
   }
 
+  // 0. Resend API Direct Integration
+  const resendApiKey = env.emailApiKey || "";
+  if (resendApiKey.startsWith("re_")) {
+    try {
+      const body = await postJson(
+        "https://api.resend.com/emails",
+        {
+          from: env.emailFrom || "onboarding@resend.dev",
+          to: [to],
+          subject,
+          html,
+          text,
+        },
+        {
+          Authorization: `Bearer ${resendApiKey}`,
+        }
+      );
+
+      return {
+        provider: "resend",
+        status: "sent",
+        responseId: body.id || "",
+      };
+    } catch (error) {
+      console.error("[RESEND EMAIL ERROR]:", error);
+      return { provider: "resend", status: "failed", error: `Resend failed: ${error.message}` };
+    }
+  }
+
   // 1. SMTP configuration
   if (env.smtpHost && env.smtpUser && env.smtpPass) {
     try {
