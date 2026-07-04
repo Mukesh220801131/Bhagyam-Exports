@@ -43,6 +43,24 @@ const fallbackSizeChart = (sizes = []) =>
     recommendedHeight: "-",
   }));
 
+
+const getColorCode = (colorName = "") => {
+  const name = colorName.toLowerCase().replace(/\s+/g, "");
+  const colorMap = {
+    mintgreen: "#a7f3d0",
+    royalblue: "#1d4ed8",
+    goldgreen: "#859154",
+    silverblue: "#8fa9c4",
+    blackgrey: "#4b5563",
+    blueprint: "#60a5fa",
+    pinkprint: "#f472b6",
+    greenprint: "#34d399",
+    multiprint: "#f87171",
+    tan: "#d2b48c",
+  };
+  return colorMap[name] || name;
+};
+
 function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems = [], onUpdateQuantity }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -50,6 +68,7 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [openSection, setOpenSection] = useState("Description");
   const [reviewSort, setReviewSort] = useState("Newest");
   const [reviews, setReviews] = useState([
@@ -76,6 +95,8 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
         const nextProduct = response.data?.data || null;
         setProduct(nextProduct);
         setSelectedImage(nextProduct?.thumbnail || nextProduct?.images?.[0] || null);
+        setSelectedColor(nextProduct?.colors?.[0] || "");
+        setSelectedSize(nextProduct?.sizes?.[0] || "");
 
         if (nextProduct?.category) {
           const relatedResponse = await axios.get(`${API_BASE_URL}/products`, {
@@ -183,7 +204,7 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
   };
 
   const cartItem = cartItems?.find(
-    (item) => item.productId === product._id && item.size === selectedSize
+    (item) => item.productId === product._id && item.size === selectedSize && item.color === selectedColor
   );
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
@@ -247,11 +268,33 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
             </div>
           )}
 
+          {product.colors?.length > 0 && (
+            <div className="color-selector">
+              <strong>Select color: <span className="selected-color-name">{selectedColor}</span></strong>
+              <div className="color-swatches">
+                {product.colors.map((color) => {
+                  const bg = getColorCode(color);
+                  return (
+                    <button
+                      className={selectedColor === color ? "color-swatch active" : "color-swatch"}
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      style={{ background: bg }}
+                      title={color}
+                      type="button"
+                      aria-label={`Select color ${color}`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {quantityInCart > 0 ? (
             <div className="quantity-controls detail-quantity-controls premium-sticky-cart">
               <button
                 className="qty-btn"
-                onClick={() => onUpdateQuantity(product._id, selectedSize, quantityInCart - 1)}
+                onClick={() => onUpdateQuantity(product._id, selectedSize, selectedColor, quantityInCart - 1)}
                 type="button"
                 aria-label="Decrease quantity"
               >
@@ -260,7 +303,7 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
               <span className="qty-value">{quantityInCart}</span>
               <button
                 className="qty-btn"
-                onClick={() => onUpdateQuantity(product._id, selectedSize, quantityInCart + 1)}
+                onClick={() => onUpdateQuantity(product._id, selectedSize, selectedColor, quantityInCart + 1)}
                 type="button"
                 aria-label="Increase quantity"
               >
@@ -271,7 +314,7 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
             <button
               className="cart-button detail-cart-button premium-sticky-cart"
               disabled={product.stock <= 0}
-              onClick={() => onAddToCart(product, selectedSize)}
+              onClick={() => onAddToCart(product, selectedSize, selectedColor)}
               type="button"
             >
               <FiShoppingBag aria-hidden="true" /> Add to cart

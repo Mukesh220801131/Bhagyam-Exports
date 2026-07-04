@@ -493,6 +493,7 @@ function CartStep({ cartItems, onClearCart, onContinue, onRemoveFromCart, onUpda
               <h3>{item.name}</h3>
               <div className="cart-item-meta">
                 <span>Size: {item.size || "One Size"}</span>
+                {item.color && <span>Color: {item.color}</span>}
                 <span>Qty: {item.quantity}</span>
               </div>
               <div className="price-row">
@@ -501,16 +502,16 @@ function CartStep({ cartItems, onClearCart, onContinue, onRemoveFromCart, onUpda
               </div>
             </div>
             <div className="cart-item-controls">
-              <button type="button" onClick={() => onUpdateQuantity(item.productId, item.size, item.quantity - 1)} aria-label="Decrease quantity">
+              <button type="button" onClick={() => onUpdateQuantity(item.productId, item.size, item.color, item.quantity - 1)} aria-label="Decrease quantity">
                 <FiMinus aria-hidden="true" />
               </button>
               <strong>{item.quantity}</strong>
-              <button type="button" onClick={() => onUpdateQuantity(item.productId, item.size, item.quantity + 1)} aria-label="Increase quantity">
+              <button type="button" onClick={() => onUpdateQuantity(item.productId, item.size, item.color, item.quantity + 1)} aria-label="Increase quantity">
                 <FiPlus aria-hidden="true" />
               </button>
               <button
                 type="button"
-                onClick={() => onRemoveFromCart(item.productId, item.size)}
+                onClick={() => onRemoveFromCart(item.productId, item.size, item.color)}
                 aria-label="Remove item"
               >
                 <FiTrash2 aria-hidden="true" />

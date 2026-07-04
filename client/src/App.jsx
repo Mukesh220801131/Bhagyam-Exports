@@ -274,21 +274,21 @@ function App() {
     });
   };
 
-  const removeFromCart = (productId, size) => {
+  const removeFromCart = (productId, size, color) => {
     setCartItems((currentItems) =>
-      currentItems.filter((item) => !(item.productId === productId && item.size === size))
+      currentItems.filter((item) => !(item.productId === productId && item.size === size && item.color === color))
     );
   };
 
-  const updateQuantity = (productId, size, quantity) => {
+  const updateQuantity = (productId, size, color, quantity) => {
     if (quantity <= 0) {
-      removeFromCart(productId, size);
+      removeFromCart(productId, size, color);
       return;
     }
 
     setCartItems((currentItems) =>
       currentItems.map((item) =>
-        item.productId === productId && item.size === size
+        item.productId === productId && item.size === size && item.color === color
           ? { ...item, quantity: Math.min(quantity, 10) }
           : item
       )
@@ -1146,7 +1146,7 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
           <div className="quantity-controls">
             <button
               className="qty-btn"
-              onClick={() => onUpdateQuantity(product._id, cartItem.size, quantityInCart - 1)}
+              onClick={() => onUpdateQuantity(product._id, cartItem.size, cartItem.color, quantityInCart - 1)}
               type="button"
               aria-label="Decrease quantity"
             >
@@ -1155,7 +1155,7 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
             <span className="qty-value">{quantityInCart}</span>
             <button
               className="qty-btn"
-              onClick={() => onUpdateQuantity(product._id, cartItem.size, quantityInCart + 1)}
+              onClick={() => onUpdateQuantity(product._id, cartItem.size, cartItem.color, quantityInCart + 1)}
               type="button"
               aria-label="Increase quantity"
             >
