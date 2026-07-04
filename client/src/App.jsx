@@ -14,6 +14,8 @@ import {
   FiSliders,
   FiPlus,
   FiMinus,
+  FiSun,
+  FiMoon,
 } from "react-icons/fi";
 import logo from "./assets/logo.png";
 import heroImage from "./assets/hero.png";
@@ -101,6 +103,11 @@ function App() {
   const [recentSearches, setRecentSearches] = useState([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(-1);
   const location = useLocation();
+  const [isNight, setIsNight] = useState(() => localStorage.getItem("fashionstore_theme") === "night");
+
+  useEffect(() => {
+    localStorage.setItem("fashionstore_theme", isNight ? "night" : "day");
+  }, [isNight]);
 
   useEffect(() => {
     try {
@@ -484,68 +491,74 @@ function App() {
             ))}
           </div>
 
-          <div className="category-spotlight-grid">
-            {categories.slice(0, 6).map((category) => (
-              <button
-                className="category-spotlight"
-                key={category._id}
-                onClick={() => setActiveCategory(category.name)}
-                type="button"
-              >
-                <img src={category.image || heroImage} alt={category.name} loading="lazy" />
-                <span>{category.name}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <ProductRail
-          emptyFallback={products.slice(0, 8)}
-          isWishlisted={isWishlisted}
-          onAddToCart={addToCart}
-          onToggleWishlist={toggleWishlist}
-          products={newArrivals}
-          title="New Arrivals"
-          cartItems={cartItems}
-          onUpdateQuantity={updateQuantity}
-        />
-        <ProductRail
-          emptyFallback={products.slice(4, 12)}
-          eyebrow="Trending"
-          isWishlisted={isWishlisted}
-          onAddToCart={addToCart}
-          onToggleWishlist={toggleWishlist}
-          products={trendingProducts}
-          title="Trending Now"
-          cartItems={cartItems}
-          onUpdateQuantity={updateQuantity}
-        />
-
-        <ProductRail
-          emptyFallback={products.slice(8, 16)}
-          eyebrow="Best sellers"
-          isWishlisted={isWishlisted}
-          onAddToCart={addToCart}
-          onToggleWishlist={toggleWishlist}
-          products={bestSellers}
-          title="Customer Favorites"
-          cartItems={cartItems}
-          onUpdateQuantity={updateQuantity}
-        />
-
-        <section className="content-section brand-section">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Shop by brand</p>
-              <h2>Brands customers love</h2>
+          {activeCategory === "All" && (
+            <div className="category-spotlight-grid">
+              {categories.slice(0, 6).map((category) => (
+                <button
+                  className="category-spotlight"
+                  key={category._id}
+                  onClick={() => setActiveCategory(category.name)}
+                  type="button"
+                >
+                  <img src={category.image || heroImage} alt={category.name} loading="lazy" />
+                  <span>{category.name}</span>
+                </button>
+              ))}
             </div>
-          </div>
-          <div className="brand-marquee">
-            {[...brands.slice(0, 10), ...brands.slice(0, 10)].map((brand, index) => (
-              <span key={`${brand._id}-${index}`}>{brand.name}</span>
-            ))}
-          </div>
+          )}
         </section>
+
+        {activeCategory === "All" && (
+          <>
+            <ProductRail
+              emptyFallback={products.slice(0, 8)}
+              isWishlisted={isWishlisted}
+              onAddToCart={addToCart}
+              onToggleWishlist={toggleWishlist}
+              products={newArrivals}
+              title="New Arrivals"
+              cartItems={cartItems}
+              onUpdateQuantity={updateQuantity}
+            />
+            <ProductRail
+              emptyFallback={products.slice(4, 12)}
+              eyebrow="Trending"
+              isWishlisted={isWishlisted}
+              onAddToCart={addToCart}
+              onToggleWishlist={toggleWishlist}
+              products={trendingProducts}
+              title="Trending Now"
+              cartItems={cartItems}
+              onUpdateQuantity={updateQuantity}
+            />
+
+            <ProductRail
+              emptyFallback={products.slice(8, 16)}
+              eyebrow="Best sellers"
+              isWishlisted={isWishlisted}
+              onAddToCart={addToCart}
+              onToggleWishlist={toggleWishlist}
+              products={bestSellers}
+              title="Customer Favorites"
+              cartItems={cartItems}
+              onUpdateQuantity={updateQuantity}
+            />
+
+            <section className="content-section brand-section">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">Shop by brand</p>
+                  <h2>Brands customers love</h2>
+                </div>
+              </div>
+              <div className="brand-marquee">
+                {[...brands.slice(0, 10), ...brands.slice(0, 10)].map((brand, index) => (
+                  <span key={`${brand._id}-${index}`}>{brand.name}</span>
+                ))}
+              </div>
+            </section>
+          </>
+        )}
 
         <section className="content-section" id="products">
           <div className="section-heading products-heading">
@@ -875,7 +888,7 @@ function App() {
   const recentCount = recentSearches.slice(0, 5).length;
 
   return (
-    <div className="storefront">
+    <div className={`storefront ${isNight ? "night-theme" : ""}`}>
       {!isAdminPath && (
         <header className="topbar">
           <Link className="brand" to="/">
@@ -980,6 +993,16 @@ function App() {
           </div>
 
           <div className="topbar-actions">
+            <button
+              className="icon-button theme-toggle-btn"
+              onClick={() => setIsNight(!isNight)}
+              type="button"
+              title={isNight ? "Switch to Day Mode" : "Switch to Night Mode"}
+              aria-label="Toggle Theme"
+            >
+              {isNight ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
+              <span className="theme-toggle-text">{isNight ? "Day" : "Night"}</span>
+            </button>
             <Link className="icon-button" to="/" aria-label="Home"><FiHome aria-hidden="true" /></Link>
             <Link className="icon-button" to="/dashboard" aria-label="Dashboard"><FiUser aria-hidden="true" /></Link>
             <Link className="icon-button wishlist-link" to="/wishlist" aria-label="Wishlist">

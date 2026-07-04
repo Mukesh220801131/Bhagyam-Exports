@@ -3337,6 +3337,295 @@
   margin-top: 24px;
 }
 
+/* Theme transition */
+.storefront {
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.topbar,
+.brand,
+.search-box,
+.search-suggestions,
+.product-card,
+.category-chip,
+.category-spotlight,
+.products-sidebar-filters,
+.products-toolbar {
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Theme Toggle Button Styling */
+.theme-toggle-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.theme-toggle-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.theme-toggle-text {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Night Theme Colors and Styles */
+.storefront.night-theme {
+  color: #cbd5e1;
+  background: linear-gradient(180deg, #0f172a, #020617 36%), #020617;
+}
+
+.storefront.night-theme .topbar {
+  background: rgba(15, 23, 42, 0.94);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .brand {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .theme-toggle-btn {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f59e0b;
+}
+
+.storefront.night-theme .theme-toggle-btn:hover {
+  background: #334155;
+  color: #fbbf24;
+}
+
+.storefront.night-theme .search-box {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.storefront.night-theme .search-box input {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .search-box input::placeholder {
+  color: #64748b;
+}
+
+.storefront.night-theme .search-suggestions {
+  background: rgba(15, 23, 42, 0.98);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.storefront.night-theme .search-suggestions strong {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .search-product-item {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.storefront.night-theme .search-product-item:hover {
+  background: #1e293b;
+}
+
+.storefront.night-theme .search-product-name {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .search-product-price {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .product-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.storefront.night-theme .product-info h3 {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .product-brand {
+  color: #94a3b8;
+}
+
+.storefront.night-theme .price-row strong {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .price-row span {
+  color: #64748b;
+}
+
+.storefront.night-theme .category-chip {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+.storefront.night-theme .category-chip:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.storefront.night-theme .category-chip.active {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  color: #020617;
+}
+
+.storefront.night-theme .category-spotlight {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+.storefront.night-theme .section-heading h2 {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .section-heading p.eyebrow {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .brand-marquee span {
+  color: rgba(255, 255, 255, 0.12);
+}
+
+.storefront.night-theme .products-sidebar-filters {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.35);
+}
+
+.storefront.night-theme .sidebar-filter-section h4 {
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .filter-link {
+  color: #64748b;
+}
+
+.storefront.night-theme .filter-link:hover {
+  color: #cbd5e1;
+}
+
+.storefront.night-theme .filter-link.active {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .sidebar-close-btn {
+  background: #1e293b;
+  color: #cbd5e1;
+}
+
+.storefront.night-theme .sidebar-close-btn:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.storefront.night-theme .mobile-filter-trigger-btn {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.storefront.night-theme .mobile-filter-trigger-btn:hover {
+  background: #334155;
+}
+
+.storefront.night-theme .products-toolbar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .toolbar-sort select {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.storefront.night-theme .qty-btn {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #38bdf8;
+}
+
+.storefront.night-theme .qty-value {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .color-swatch.active::after {
+  border-color: #38bdf8;
+}
+
+.storefront.night-theme .premium-product-page,
+.storefront.night-theme .cart-summary {
+  color: #cbd5e1;
+}
+
+.storefront.night-theme .premium-buy-panel h1 {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .detail-back {
+  color: #38bdf8;
+}
+
+.storefront.night-theme .footer {
+  background: #020617;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .footer-bottom {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .footer-bottom p {
+  color: #64748b;
+}
+
+/* Micro-animations and SaaS visual polish */
+.category-chip {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.category-spotlight {
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.category-spotlight img {
+  transition: transform 0.3s ease;
+}
+
+.category-spotlight:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+}
+
+.category-spotlight:hover img {
+  transform: scale(1.06);
+}
+
 /* Mobile Filter Drawer & Backdrop Overlay */
 @media (max-width: 980px) {
   .mobile-filter-trigger-btn {
@@ -3431,6 +3720,8 @@
     display: none;
   }
 }
+
+
 
 
 
