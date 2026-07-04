@@ -43,6 +43,16 @@ const calculateDiscount = (price, discountPrice) => {
   return Math.round(((price - discountPrice) / price) * 100);
 };
 
+const handleImageError = (event, category) => {
+  const cat = category?.toLowerCase() || "";
+  let fallback = "/images/women_fashion.png";
+  if (cat === "men") fallback = "/images/men_fashion.png";
+  else if (cat === "kids") fallback = "/images/kids_fashion.png";
+  else if (cat === "accessories") fallback = "/images/accessories_fashion.png";
+  else if (cat === "footwear") fallback = "/images/footwear_fashion.png";
+  event.target.src = fallback;
+};
+
 const useStoredState = (key, initialValue) => {
   const [value, setValue] = useState(() => {
     try {
@@ -499,7 +509,12 @@ function App() {
                 onClick={() => setActiveCategory(category.name)}
                 type="button"
               >
-                <img src={category.image || heroImage} alt={category.name} loading="lazy" />
+                <img
+                  src={category.image || heroImage}
+                  alt={category.name}
+                  loading="lazy"
+                  onError={(e) => handleImageError(e, category.name)}
+                />
                 <span>{category.name}</span>
               </button>
             ))}
@@ -848,7 +863,13 @@ function App() {
           </div>
           <div className="instagram-grid">
             {products.slice(0, 6).map((product) => (
-              <img key={product._id} src={product.thumbnail || product.images?.[0]} alt={product.name} loading="lazy" />
+              <img
+                key={product._id}
+                src={product.thumbnail || product.images?.[0]}
+                alt={product.name}
+                loading="lazy"
+                onError={(e) => handleImageError(e, product.category)}
+              />
             ))}
           </div>
           <form className="newsletter-box" onSubmit={(event) => event.preventDefault()}>
@@ -1135,7 +1156,12 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
       <Link className="product-image-link" to={`/product/${product._id}`}>
         <div className="product-image">
           {discount && <span className="discount-badge">{discount}% off</span>}
-          <img src={product.thumbnail || product.images?.[0]} alt={product.name} loading="lazy" />
+          <img
+            src={product.thumbnail || product.images?.[0]}
+            alt={product.name}
+            loading="lazy"
+            onError={(e) => handleImageError(e, product.category)}
+          />
         </div>
       </Link>
       <button

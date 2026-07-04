@@ -61,6 +61,16 @@ const getColorCode = (colorName = "") => {
   return colorMap[name] || name;
 };
 
+const handleImageError = (event, category) => {
+  const cat = category?.toLowerCase() || "";
+  let fallback = "/images/women_fashion.png";
+  if (cat === "men") fallback = "/images/men_fashion.png";
+  else if (cat === "kids") fallback = "/images/kids_fashion.png";
+  else if (cat === "accessories") fallback = "/images/accessories_fashion.png";
+  else if (cat === "footwear") fallback = "/images/footwear_fashion.png";
+  event.target.src = fallback;
+};
+
 function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems = [], onUpdateQuantity }) {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -220,7 +230,11 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
         <div className="premium-gallery">
           <div className="premium-preview">
             {discount && <span className="discount-badge">{discount}% off</span>}
-            <img src={selectedImage || images[0]} alt={product.name} />
+             <img
+              src={selectedImage || images[0]}
+              alt={product.name}
+              onError={(e) => handleImageError(e, product.category)}
+            />
           </div>
           <div className="premium-thumbnails">
             {images.map((image) => (
@@ -230,7 +244,11 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
                 onClick={() => setSelectedImage(image)}
                 type="button"
               >
-                <img src={image} alt={product.name} />
+                 <img
+                  src={image}
+                  alt={product.name}
+                  onError={(e) => handleImageError(e, product.category)}
+                />
               </button>
             ))}
           </div>
@@ -510,7 +528,12 @@ function ProductRail({ products, title }) {
           <article className="product-card" key={product._id}>
             <Link className="product-image-link" to={`/product/${product._id}`}>
               <div className="product-image">
-                <img src={product.thumbnail || product.images?.[0]} alt={product.name} loading="lazy" />
+                 <img
+                  src={product.thumbnail || product.images?.[0]}
+                  alt={product.name}
+                  loading="lazy"
+                  onError={(e) => handleImageError(e, product.category)}
+                />
               </div>
             </Link>
             <div className="product-info">
