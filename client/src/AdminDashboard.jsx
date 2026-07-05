@@ -1846,26 +1846,185 @@ function ReviewsView() {
 }
 
 function CouponsView() {
-  const [coupon, setCoupon] = useState({ code: "", type: "Percentage", value: "", expiry: "", minimum: "", limit: "" });
+  const [coupon, setCoupon] = useState({
+    code: "",
+    type: "Percentage",
+    value: "",
+    expiry: "",
+    minimum: "",
+    limit: "",
+  });
+  const [couponsList, setCouponsList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCoupons = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL.replace("/api", "/api/coupons")}`);
+      setCouponsList(response.data?.data || []);
+    } catch (error) {
+      toast.error("Failed to load coupons");
+    }
+  };
+
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!coupon.code || !coupon.value) {
+      toast.error("Code and value are required");
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.post(`${API_BASE_URL.replace("/api", "/api/coupons")}`, coupon);
+      toast.success("Coupon saved successfully!");
+      setCoupon({ code: "", type: "Percentage", value: "", expiry: "", minimum: "", limit: "" });
+      fetchCoupons();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to save coupon");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this coupon?")) return;
+    try {
+      await axios.delete(`${API_BASE_URL.replace("/api", "/api/coupons")}/${id}`);
+      toast.success("Coupon deleted successfully");
+      fetchCoupons();
+    } catch (error) {
+      toast.error("Failed to delete coupon");
+    }
+  };
+
+  const handleEdit = (c) => {
+    setCoupon({
+      code: c.code,
+      type: c.type,
+      value: c.value,
+      expiry: c.expiry ? c.expiry.split("T")[0] : "",
+      minimum: c.minimum || "",
+      limit: c.limit || "",
+    });
+  };
+
   return (
     <section className="admin-view admin-split">
-      <form className="admin-panel admin-taxonomy-form" onSubmit={(event) => { event.preventDefault(); toast.success("Coupon UI saved"); }}>
-        <div className="admin-panel-heading"><h2>Create Coupon</h2></div>
-        <TextField label="Coupon Code" value={coupon.code} onChange={(value) => setCoupon((current) => ({ ...current, code: value }))} />
+      <form className="admin-panel admin-taxonomy-form" onSubmit={handleSubmit}>
+        <div className="admin-panel-heading"><h2>Create or Edit Coupon</h2></div>
+        <TextField
+          label="Coupon Code"
+          value={coupon.code}
+          onChange={(value) => setCoupon((current) => ({ ...current, code: value }))}
+        />
         <label>
           Type
-          <select value={coupon.type} onChange={(event) => setCoupon((current) => ({ ...current, type: event.target.value }))}>
+          <select
+            value={coupon.type}
+            onChange={(event) => setCoupon((current) => ({ ...current, type: event.target.value }))}
+          >
             <option>Percentage</option>
             <option>Flat Discount</option>
           </select>
         </label>
-        <TextField label="Value" type="number" value={coupon.value} onChange={(value) => setCoupon((current) => ({ ...current, value }))} />
-        <TextField label="Expiry Date" type="date" value={coupon.expiry} onChange={(value) => setCoupon((current) => ({ ...current, expiry: value }))} />
-        <TextField label="Minimum Purchase" type="number" value={coupon.minimum} onChange={(value) => setCoupon((current) => ({ ...current, minimum: value }))} />
-        <TextField label="Usage Limit" type="number" value={coupon.limit} onChange={(value) => setCoupon((current) => ({ ...current, limit: value }))} />
-        <button className="admin-primary" type="submit">Save Coupon</button>
+        <TextField
+          label="Value"
+          type="number"
+          value={coupon.value}
+          onChange={(value) => setCoupon((current) => ({ ...current, value: Number(value) }))}
+        />
+        <TextField
+          label="Expiry Date"
+          type="date"
+          value={coupon.expiry}
+          onChange={(value) => setCoupon((current) => ({ ...current, expiry: value }))}
+        />
+        <TextField
+          label="Minimum Purchase"
+          type="number"
+          value={coupon.minimum}
+          onChange={(value) => setCoupon((current) => ({ ...current, minimum: Number(value) }))}
+        />
+        <TextField
+          label="Usage Limit"
+          type="number"
+          value={coupon.limit}
+          onChange={(value) => setCoupon((current) => ({ ...current, limit: Number(value) }))}
+        />
+        <button className="admin-primary" type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save Coupon"}
+        </button>
       </form>
-      <SimpleTable title="Coupons" headers={["Code", "Type", "Expiry", "Minimum Purchase", "Usage Limit"]} rows={coupon.code ? [[coupon.code, coupon.type, coupon.expiry, coupon.minimum, coupon.limit]] : []} />
+
+      <section className="admin-panel">
+        <div className="admin-panel-heading"><h2>Active Coupons</h2></div>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Min Purchase</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {couponsList.length > 0 ? (
+                couponsList.map((c) => (
+                  <tr key={c._id}>
+                    <td style={{ fontWeight: "bold", color: "#0ea5e9" }}>{c.code}</td>
+                    <td>{c.type}</td>
+                    <td>{c.type === "Percentage" || c.type === "percent" ? `${c.value}%` : `Rs. ${c.value}`}</td>
+                    <td>Rs. {c.minimum || 0}</td>
+                    <td>
+                      <div style={{ display: "flex", gap: "8px" }}>
+                        <button
+                          onClick={() => handleEdit(c)}
+                          style={{
+                            padding: "4px 8px",
+                            background: "#0ea5e9",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            fontSize: "11px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(c._id)}
+                          style={{
+                            padding: "4px 8px",
+                            background: "#ef4444",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            fontSize: "11px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5">No active coupons found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </section>
   );
 }

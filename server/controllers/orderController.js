@@ -133,17 +133,43 @@ const loadOrderItems = async (cartItems = []) => {
   });
 };
 
-const buildTotals = (items, couponCode = "") => {
+// Load coupon rule asynchronously
+const getCouponRule = async (couponCode) => {
+  if (!couponCode) return null;
+  const normalized = normalizeCoupon(couponCode);
+  
+  // Try database lookup first
+  try {
+    const Coupon = require("../models/Coupon");
+    const dbCoupon = await Coupon.findOne({ code: normalized });
+    if (dbCoupon) {
+      // Check expiry
+      if (dbCoupon.expiry && new Date(dbCoupon.expiry) < new Date()) {
+        return null;
+      }
+      return {
+        type: dbCoupon.type.toLowerCase().includes("percent") ? "percent" : "flat",
+        value: dbCoupon.value,
+        minimum: dbCoupon.minimum || 0
+      };
+    }
+  } catch (e) {
+    console.error("Coupon DB lookup failed, falling back to static", e);
+  }
+  
+  // Fallback to static coupon rules
+  return couponRules[normalized] || null;
+};
+
+const buildTotals = (items, couponRule = null, couponCode = "") => {
   const subtotal = roundMoney(items.reduce((sum, item) => sum + item.lineTotal, 0));
-  const normalizedCoupon = normalizeCoupon(couponCode);
-  const coupon = couponRules[normalizedCoupon];
   let discount = 0;
 
-  if (coupon && subtotal >= coupon.minimum) {
+  if (couponRule && subtotal >= couponRule.minimum) {
     discount =
-      coupon.type === "percent"
-        ? roundMoney((subtotal * coupon.value) / 100)
-        : roundMoney(coupon.value);
+      couponRule.type === "percent"
+        ? roundMoney((subtotal * couponRule.value) / 100)
+        : roundMoney(couponRule.value);
   }
 
   const shippingFee = subtotal >= 1499 ? 0 : 79;
@@ -154,7 +180,7 @@ const buildTotals = (items, couponCode = "") => {
   return {
     subtotal,
     discount,
-    couponCode: discount > 0 ? normalizedCoupon : "",
+    couponCode: discount > 0 ? normalizeCoupon(couponCode) : "",
     shippingFee,
     tax,
     total,
@@ -170,7 +196,8 @@ const buildOrderPayload = async ({ cartItems, address, paymentMethod, couponCode
   }
 
   const items = await loadOrderItems(cartItems);
-  const totals = buildTotals(items, couponCode);
+  const couponRule = await getCouponRule(couponCode);
+  const totals = buildTotals(items, couponRule, couponCode);
 
   return {
     user: user?._id || null,
@@ -201,14 +228,22 @@ const decrementStock = async (items) => {
 const quoteOrder = async (req, res) => {
   try {
     const items = await loadOrderItems(req.body.items || req.body.cartItems);
-    const totals = buildTotals(items, req.body.couponCode);
+    const couponRule = await getCouponRule(req.body.couponCode);
+    const totals = buildTotals(items, couponRule, req.body.couponCode);
+
+    let dbCodes = [];
+    try {
+      const Coupon = require("../models/Coupon");
+      const dbCoupons = await Coupon.find({}).select("code");
+      dbCodes = dbCoupons.map(c => c.code);
+    } catch (e) {}
 
     res.json({
       success: true,
       data: {
         items,
         ...totals,
-        coupons: Object.keys(couponRules),
+        coupons: [...new Set([...Object.keys(couponRules), ...dbCodes])],
       },
     });
   } catch (error) {

@@ -11,6 +11,7 @@ const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const couponRoutes = require("./routes/couponRoutes");
 const {
   rateLimiter,
   sanitizeRequest,
@@ -67,6 +68,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/coupons", couponRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
