@@ -1283,7 +1283,7 @@ function Footer() {
         <div className="footer-column">
           <h3>Get to Know Us</h3>
           <ul>
-            <li><Link to="/">About Bhagyam Exports</Link></li>
+            <li><a href="https://bhagyamexports.com/index.html" target="_blank" rel="noopener noreferrer">About Bhagyam Exports</a></li>
             <li><Link to="/">Careers</Link></li>
             <li><Link to="/">Press Releases</Link></li>
             <li><Link to="/">Brand Story</Link></li>
