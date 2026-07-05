@@ -1464,7 +1464,7 @@ function TextField({ label, onChange, required, type = "text", value }) {
   );
 }
 
-function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, loadTaxonomy, title }) {
+function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, onSaved, title }) {
   const isBrand = endpoint === "brands";
   const empty = isBrand
     ? { name: "", description: "", logo: "", website: "", countryOfOrigin: "", popularity: 0, isActive: true }
@@ -1484,7 +1484,7 @@ function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, loadTaxonomy, 
       toast.success(`${title.slice(0, -1)} saved`);
       setForm(empty);
       setEditingId("");
-      loadTaxonomy();
+      if (onSaved) onSaved();
     } catch (error) {
       toast.error(error.response?.data?.message || "Save failed");
     }
@@ -1495,7 +1495,7 @@ function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, loadTaxonomy, 
     try {
       await axios.delete(`${API_BASE_URL}/${endpoint}/${item._id}`, { headers: authHeaders });
       toast.success("Deleted");
-      loadTaxonomy();
+      if (onSaved) onSaved();
     } catch (error) {
       toast.error(error.response?.data?.message || "Delete failed");
     }
@@ -1505,13 +1505,16 @@ function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, loadTaxonomy, 
     if (!file) return;
     const body = new FormData();
     body.append("image", file);
+    const toastId = toast.loading("Uploading image...");
     try {
       const response = await axios.post(`${API_BASE_URL}/upload/single`, body, {
         headers: { ...authHeaders, "Content-Type": "multipart/form-data" },
       });
-      setForm((current) => ({ ...current, [isBrand ? "logo" : "image"]: response.data?.data?.url || "" }));
+      const url = response.data?.data?.url || "";
+      setForm((current) => ({ ...current, [isBrand ? "logo" : "image"]: url }));
+      toast.success("Image uploaded successfully!", { id: toastId });
     } catch (error) {
-      toast.error(error.response?.data?.message || "Upload failed");
+      toast.error(error.response?.data?.message || "Upload failed", { id: toastId });
     }
   };
 
