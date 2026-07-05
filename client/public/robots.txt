@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /order-success/
+
+Sitemap: https://bhagyamexports.com/sitemap.xml
+Sitemap: https://bhagyam-exports.vercel.app/sitemap.xml
