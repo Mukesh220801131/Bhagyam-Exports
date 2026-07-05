@@ -1523,7 +1523,7 @@ function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, onSaved, title
       <form className="admin-panel admin-taxonomy-form" onSubmit={save}>
         <div className="admin-panel-heading">
           <h2>{editingId ? `Edit ${title.slice(0, -1)}` : `Add ${title.slice(0, -1)}`}</h2>
-          <Icon aria-hidden="true" />
+          {Icon && <Icon aria-hidden="true" />}
         </div>
         <TextField label="Name" required value={form.name} onChange={(value) => setForm((current) => ({ ...current, name: value }))} />
         <label>
