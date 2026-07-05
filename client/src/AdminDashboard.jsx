@@ -1557,14 +1557,39 @@ function TaxonomyView({ authHeaders, endpoint, icon: Icon, items, loadTaxonomy, 
         </div>
         <div className="admin-list">
           {items.map((item) => (
-            <article className="admin-list-item" key={item._id}>
+            <article 
+              className="admin-list-item" 
+              key={item._id}
+              onClick={() => {
+                setEditingId(item._id);
+                setForm({ ...empty, ...item });
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              style={{ cursor: "pointer" }}
+            >
               <img src={item.logo || item.image} alt={item.name} />
-              <div>
+              <div style={{ flex: 1 }}>
                 <strong>{item.name}</strong>
                 <span>{item.description}</span>
               </div>
-              <button onClick={() => { setEditingId(item._id); setForm({ ...empty, ...item }); }} type="button"><FiEdit2 /></button>
-              <button onClick={() => remove(item)} type="button"><FiTrash2 /></button>
+              <button 
+                type="button"
+                className="admin-action-btn edit-btn"
+                title="Edit item"
+              >
+                <FiEdit2 />
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  remove(item);
+                }} 
+                type="button"
+                className="admin-action-btn delete-btn"
+                title="Delete item"
+              >
+                <FiTrash2 />
+              </button>
             </article>
           ))}
         </div>
