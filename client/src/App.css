@@ -3806,6 +3806,157 @@
   color: #f8fafc;
 }
 
+/* Footer Styles (Amazon-Inspired Premium Footer) */
+.footer {
+  background: #232f3e;
+  color: #eaedd1;
+  font-family: inherit;
+  margin-top: 40px;
+}
+
+.back-to-top-btn {
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  background: #37475a;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+  background: #485769;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.footer-column h3 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+  color: #dddddd;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+.footer-branding {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #3a4553;
+  border-bottom: 1px solid #3a4553;
+}
+
+.footer-branding h2 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 30px 20px;
+  background: #131a22;
+  color: #999999;
+}
+
+.footer-bottom p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ccc;
+}
+
+.footer-bottom strong {
+  color: #ffffff;
+}
+
+.footer-bottom a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+.footer-contacts {
+  font-size: 13px;
+}
+
+.copyright-text {
+  font-size: 11px !important;
+  color: #777777 !important;
+  margin-top: 15px !important;
+}
+
+/* Mobile responsive footer */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Night theme overrides */
+.storefront.night-theme .footer {
+  background: #0b0f19;
+}
+
+.storefront.night-theme .back-to-top-btn {
+  background: #172033;
+}
+
+.storefront.night-theme .back-to-top-btn:hover {
+  background: #1e2942;
+}
+
+.storefront.night-theme .footer-bottom {
+  background: #070a10;
+}
+
 
 
 

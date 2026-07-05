@@ -1131,6 +1131,7 @@ function App() {
         <Route path="/track" element={<TrackOrderPage />} />
         <Route path="/track/:orderNumber" element={<TrackOrderPage />} />
       </Routes>
+      {!isAdminPath && <Footer />}
     </div>
   );
 }
@@ -1263,3 +1264,77 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
 }
 
 export default App;
+
+function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+  return (
+    <footer className="footer">
+      <button className="back-to-top-btn" onClick={scrollToTop} type="button">
+        Back to top
+      </button>
+      
+      <div className="footer-content">
+        <div className="footer-column">
+          <h3>Get to Know Us</h3>
+          <ul>
+            <li><Link to="/">About Bhagyam Exports</Link></li>
+            <li><Link to="/">Careers</Link></li>
+            <li><Link to="/">Press Releases</Link></li>
+            <li><Link to="/">Brand Story</Link></li>
+          </ul>
+        </div>
+        
+        <div className="footer-column">
+          <h3>Connect with Us</h3>
+          <ul>
+            <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </div>
+        
+        <div className="footer-column">
+          <h3>Vixelate Team</h3>
+          <ul>
+            <li><a href="mailto:mkriche6@gmail.com">Services</a></li>
+            <li><a href="tel:+919345954077">Contact Us</a></li>
+            <li><Link to="/">Portfolio</Link></li>
+            <li><Link to="/">Case Studies</Link></li>
+          </ul>
+        </div>
+        
+        <div className="footer-column">
+          <h3>Let Us Help You</h3>
+          <ul>
+            <li><Link to="/dashboard">Your Account</Link></li>
+            <li><Link to="/track">Returns Centre</Link></li>
+            <li><Link to="/track">Help & Support</Link></li>
+            <li><Link to="/">Policies</Link></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div className="footer-branding">
+        <h2>Bhagyam Exports</h2>
+      </div>
+      
+      <div className="footer-bottom">
+        <p>
+          Designed & Developed by <strong>Mukesh & Team Vixelate</strong>
+        </p>
+        <p className="footer-contacts">
+          Email: <a href="mailto:mkriche6@gmail.com">mkriche6@gmail.com</a> | Phone: <a href="tel:+919345954077">+91 9345954077</a>
+        </p>
+        <p className="copyright-text">
+          &copy; {new Date().getFullYear()} Bhagyam Exports. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
