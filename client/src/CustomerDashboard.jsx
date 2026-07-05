@@ -46,7 +46,7 @@ const formatDate = (value) =>
     : "Updating soon";
 
 function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("overview");
   const [orders, setOrders] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [notificationUnreadCount, setNotificationUnreadCount] = useState(0);
@@ -332,56 +332,140 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
 
       {status && <div className="status-box">{status}</div>}
 
-      <div className="dashboard-layout">
-        <nav className="dashboard-tabs">
-          {tabs.map(([id, label, Icon]) => (
-            <button
-              className={activeTab === id ? "dashboard-tab active" : "dashboard-tab"}
-              key={id}
-              onClick={() => setActiveTab(id)}
-              type="button"
-            >
-              <Icon aria-hidden="true" />
-              {label}
-              {id === "notifications" && notificationUnreadCount > 0 && (
-                <span className="dashboard-tab-count">{notificationUnreadCount > 9 ? "9+" : notificationUnreadCount}</span>
-              )}
-            </button>
-          ))}
-          <div className="dashboard-logout-tab">
-            <button
-              className="dashboard-logout-btn"
-              onClick={handleSignOut}
-              type="button"
-            >
-              <FiLogOut aria-hidden="true" />
-              Sign Out
-            </button>
-          </div>
-        </nav>
+      {activeTab === "overview" ? (
+        <div className="account-overview-grid">
+          <button className="account-card" onClick={() => setActiveTab("orders")} type="button">
+            <div className="account-card-icon"><FiPackage /></div>
+            <div className="account-card-info">
+              <h3>Your Orders</h3>
+              <p>Track, return, or buy things again</p>
+            </div>
+          </button>
 
-        <section className="dashboard-panel">
-          {activeTab === "profile" && <ProfilePanel profile={profile} saveProfile={saveProfile} isSupabaseUser={Boolean(session?.user)} />}
-          {activeTab === "address" && <AddressPanel profile={profile} saveProfile={saveProfile} />}
-          {activeTab === "wishlist" && (
-            <WishlistPanel items={wishlist} onMoveToCart={onMoveToCart} onRemoveWishlist={onRemoveWishlist} />
-          )}
-          {activeTab === "orders" && (
-            <OrdersPanel cancelOrder={cancelOrder} returnOrder={returnOrder} downloadInvoice={downloadInvoice} orders={orders} />
-          )}
-          {activeTab === "notifications" && (
-            <CustomerNotificationsPanel
-              notifications={notifications}
-              onMarkRead={markNotificationRead}
-              unreadCount={notificationUnreadCount}
-            />
-          )}
-          {activeTab === "cards" && <SavedCardsPanel />}
-          {activeTab === "coupons" && <CouponsPanel />}
-          {activeTab === "recent" && <RecentPanel products={recentlyViewed} />}
-          {activeTab === "timeline" && <TimelinePanel events={latestTimeline} />}
-        </section>
-      </div>
+          <button className="account-card" onClick={() => setActiveTab("profile")} type="button">
+            <div className="account-card-icon"><FiUser /></div>
+            <div className="account-card-info">
+              <h3>Login & security</h3>
+              <p>Edit login, name, and email details</p>
+            </div>
+          </button>
+
+          <button className="account-card" onClick={() => setActiveTab("address")} type="button">
+            <div className="account-card-icon"><FiMapPin /></div>
+            <div className="account-card-info">
+              <h3>Your Addresses</h3>
+              <p>Edit delivery addresses for orders</p>
+            </div>
+          </button>
+
+          <button className="account-card" onClick={() => setActiveTab("cards")} type="button">
+            <div className="account-card-icon"><FiCreditCard /></div>
+            <div className="account-card-info">
+              <h3>Payment options</h3>
+              <p>Edit or add saved credit/debit cards</p>
+            </div>
+          </button>
+
+          <button className="account-card" onClick={() => setActiveTab("coupons")} type="button">
+            <div className="account-card-icon"><FiTag /></div>
+            <div className="account-card-info">
+              <h3>Offers & Coupons</h3>
+              <p>View available discount vouchers</p>
+            </div>
+          </button>
+
+          <button className="account-card" onClick={() => setActiveTab("notifications")} type="button">
+            <div className="account-card-icon"><FiBell /></div>
+            <div className="account-card-info">
+              <h3>Order Updates</h3>
+              <p>View unread notifications and alerts</p>
+            </div>
+          </button>
+
+          <button className="account-card" onClick={() => setActiveTab("recent")} type="button">
+            <div className="account-card-icon"><FiRefreshCcw /></div>
+            <div className="account-card-info">
+              <h3>Recently Viewed</h3>
+              <p>View items you browsed recently</p>
+            </div>
+          </button>
+
+          <button
+            className="account-card"
+            onClick={() => {
+              window.location.href = "tel:044-26521699";
+            }}
+            type="button"
+            style={{ border: "1px dashed #38bdf8" }}
+          >
+            <div className="account-card-icon" style={{ background: "#e0f2fe", color: "#0284c7" }}><FiPhone /></div>
+            <div className="account-card-info">
+              <h3>Contact Us / Support</h3>
+              <p>Call customer service at 044-26521699</p>
+            </div>
+          </button>
+        </div>
+      ) : (
+        <div className="dashboard-layout">
+          <nav className="dashboard-tabs">
+            <button
+              className="dashboard-tab dashboard-back-tab"
+              onClick={() => setActiveTab("overview")}
+              type="button"
+              style={{ marginBottom: "16px", background: "#f8fafc", border: "1px solid #e2e8f0", fontWeight: "750" }}
+            >
+              <FiArrowLeft aria-hidden="true" />
+              Back to Account
+            </button>
+            {tabs.map(([id, label, Icon]) => (
+              <button
+                className={activeTab === id ? "dashboard-tab active" : "dashboard-tab"}
+                key={id}
+                onClick={() => setActiveTab(id)}
+                type="button"
+              >
+                <Icon aria-hidden="true" />
+                {label}
+                {id === "notifications" && notificationUnreadCount > 0 && (
+                  <span className="dashboard-tab-count">{notificationUnreadCount > 9 ? "9+" : notificationUnreadCount}</span>
+                )}
+              </button>
+            ))}
+            <div className="dashboard-logout-tab">
+              <button
+                className="dashboard-logout-btn"
+                onClick={handleSignOut}
+                type="button"
+              >
+                <FiLogOut aria-hidden="true" />
+                Sign Out
+              </button>
+            </div>
+          </nav>
+
+          <section className="dashboard-panel">
+            {activeTab === "profile" && <ProfilePanel profile={profile} saveProfile={saveProfile} isSupabaseUser={Boolean(session?.user)} />}
+            {activeTab === "address" && <AddressPanel profile={profile} saveProfile={saveProfile} />}
+            {activeTab === "wishlist" && (
+              <WishlistPanel items={wishlist} onMoveToCart={onMoveToCart} onRemoveWishlist={onRemoveWishlist} />
+            )}
+            {activeTab === "orders" && (
+              <OrdersPanel cancelOrder={cancelOrder} returnOrder={returnOrder} downloadInvoice={downloadInvoice} orders={orders} />
+            )}
+            {activeTab === "notifications" && (
+              <CustomerNotificationsPanel
+                notifications={notifications}
+                onMarkRead={markNotificationRead}
+                unreadCount={notificationUnreadCount}
+              />
+            )}
+            {activeTab === "cards" && <SavedCardsPanel />}
+            {activeTab === "coupons" && <CouponsPanel />}
+            {activeTab === "recent" && <RecentPanel products={recentlyViewed} />}
+            {activeTab === "timeline" && <TimelinePanel events={latestTimeline} />}
+          </section>
+        </div>
+      )}
     </main>
   );
 }

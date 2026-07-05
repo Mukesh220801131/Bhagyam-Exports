@@ -3957,6 +3957,133 @@
   background: #070a10;
 }
 
+/* Amazon Account Overview Cards */
+.account-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .account-overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .account-overview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.account-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border-color: #38bdf8;
+}
+
+.account-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  color: #334155;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.account-card:hover .account-card-icon {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.account-card-info h3 {
+  color: #1e293b;
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.account-card-info p {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+/* Back button in tabs sidebar */
+.dashboard-back-tab {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  font-weight: 800 !important;
+}
+
+.dashboard-back-tab:hover {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Night theme support for Account Overview */
+.storefront.night-theme .account-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.storefront.night-theme .account-card-icon {
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+.storefront.night-theme .account-card:hover .account-card-icon {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.storefront.night-theme .account-card-info h3 {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .account-card-info p {
+  color: #94a3b8;
+}
+
+.storefront.night-theme .dashboard-back-tab {
+  background: #0f172a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+}
+
+.storefront.night-theme .dashboard-back-tab:hover {
+  background: #1e293b !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+
 
 
 
