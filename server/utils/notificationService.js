@@ -178,12 +178,16 @@ const sendEmail = async ({ to, subject, html, text }) => {
   // 0. Resend API Direct Integration
   const resendApiKey = env.emailApiKey || "";
   if (resendApiKey.startsWith("re_")) {
+    const sender = env.emailFrom || "onboarding@resend.dev";
+    // Resend sandbox mode requires sending to the account owner (mkriche6@gmail.com)
+    const targetRecipient = sender.includes("onboarding@resend.dev") ? "mkriche6@gmail.com" : to;
+
     try {
       const body = await postJson(
         "https://api.resend.com/emails",
         {
-          from: env.emailFrom || "onboarding@resend.dev",
-          to: [to],
+          from: sender,
+          to: [targetRecipient],
           subject,
           html,
           text,
