@@ -25,6 +25,24 @@ import { supabase, isSupabaseConfigured } from "./supabaseClient";
 import { lookupPincode } from "./pincodeHelper";
 import "./App.css";
 
+const setCookie = (name, value, days = 365) => {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "; expires=" + date.toUTCString();
+  document.cookie = name + "=" + encodeURIComponent(value || "") + expires + "; path=/; SameSite=Lax";
+};
+
+const getCookie = (name) => {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+  }
+  return null;
+};
+
 const tabs = [
   ["profile", "Profile", FiUser],
   ["address", "Address", FiMapPin],
@@ -52,6 +70,8 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
   const [notificationUnreadCount, setNotificationUnreadCount] = useState(0);
   const [profile, setProfile] = useState(() => {
     try {
+      const cookieProfile = getCookie("fashionstore_customer_profile");
+      if (cookieProfile) return JSON.parse(cookieProfile);
       return JSON.parse(localStorage.getItem("fashionstore_customer_profile") || "{}");
     } catch {
       return {};
@@ -80,6 +100,7 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
         };
         setProfile(userProfile);
         localStorage.setItem("fashionstore_customer_profile", JSON.stringify(userProfile));
+        setCookie("fashionstore_customer_profile", JSON.stringify(userProfile), 365);
       }
     });
 
@@ -95,11 +116,7 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
         };
         setProfile(userProfile);
         localStorage.setItem("fashionstore_customer_profile", JSON.stringify(userProfile));
-      } else if (!session) {
-        if (!isDemoMode) {
-          setProfile({});
-          localStorage.removeItem("fashionstore_customer_profile");
-        }
+        setCookie("fashionstore_customer_profile", JSON.stringify(userProfile), 365);
       }
     });
 
@@ -196,6 +213,7 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
   const saveProfile = async (nextProfile) => {
     setProfile(nextProfile);
     localStorage.setItem("fashionstore_customer_profile", JSON.stringify(nextProfile));
+    setCookie("fashionstore_customer_profile", JSON.stringify(nextProfile), 365);
 
     if (isSupabaseConfigured && supabase && session?.user) {
       try {
@@ -224,7 +242,6 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
       await supabase.auth.signOut();
     }
     localStorage.removeItem("fashionstore_demo_mode");
-    localStorage.removeItem("fashionstore_customer_profile");
     window.location.reload();
   };
 

@@ -16,6 +16,24 @@ import { supabase, isSupabaseConfigured } from "./supabaseClient";
 import { lookupPincode } from "./pincodeHelper";
 import "./App.css";
 
+const setCookie = (name, value, days = 365) => {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = "; expires=" + date.toUTCString();
+  document.cookie = name + "=" + encodeURIComponent(value || "") + expires + "; path=/; SameSite=Lax";
+};
+
+const getCookie = (name) => {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+  }
+  return null;
+};
+
 const coupons = {
   WELCOME10: "10% off above Rs. 499",
   FASHION20: "20% off above Rs. 1,499",
@@ -109,7 +127,13 @@ function CartPage({
 
   useEffect(() => {
     try {
-      const localProfile = JSON.parse(localStorage.getItem("fashionstore_customer_profile") || "{}");
+      let localProfile = {};
+      const cookieProfile = getCookie("fashionstore_customer_profile");
+      if (cookieProfile) {
+        localProfile = JSON.parse(cookieProfile);
+      } else {
+        localProfile = JSON.parse(localStorage.getItem("fashionstore_customer_profile") || "{}");
+      }
       if (localProfile.email) {
         const savedAddress = localProfile.address || {};
         setAddress((currentAddress) => ({
@@ -265,15 +289,14 @@ function CartPage({
     const storedOrders = JSON.parse(localStorage.getItem("fashionstore_order_numbers") || "[]");
     const nextOrders = [order.orderNumber, ...storedOrders.filter((id) => id !== order.orderNumber)].slice(0, 12);
     localStorage.setItem("fashionstore_order_numbers", JSON.stringify(nextOrders));
-    localStorage.setItem(
-      "fashionstore_customer_profile",
-      JSON.stringify({
-        name: order.customer.fullName,
-        email: order.customer.email,
-        phone: order.customer.phone,
-        address: order.shippingAddress,
-      })
-    );
+    const userProfile = {
+      name: order.customer.fullName,
+      email: order.customer.email,
+      phone: order.customer.phone,
+      address: order.shippingAddress,
+    };
+    localStorage.setItem("fashionstore_customer_profile", JSON.stringify(userProfile));
+    setCookie("fashionstore_customer_profile", JSON.stringify(userProfile), 365);
     navigate(`/order-success/${order.orderNumber}`, { state: { order } });
   };
 
