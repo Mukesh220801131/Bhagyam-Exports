@@ -436,7 +436,7 @@ function App() {
             <div className="owner-card">
               <img src={ownerPhoto} alt="Owner of Bhagyam Exports" />
               <div>
-                <strong>Curated by Bhagyam Exports</strong>
+                <strong>Owner of Bhagyam Exports</strong>
                 <span>Fast dispatch, easy returns, premium quality checks</span>
               </div>
             </div>
