@@ -3375,11 +3375,33 @@
   cursor: pointer;
 }
 
-/* Night Theme Colors and Styles */
 .storefront.night-theme {
   color: #cbd5e1;
   background: linear-gradient(180deg, #0f172a, #020617 36%), #020617;
 }
+
+.storefront.night-theme .hero-copy h1 {
+  color: #ffffff;
+}
+
+.storefront.night-theme .hero-text {
+  color: #94a3b8;
+}
+
+.storefront.night-theme .owner-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+}
+
+.storefront.night-theme .owner-card strong {
+  color: #f8fafc;
+}
+
+.storefront.night-theme .owner-card span {
+  color: #94a3b8;
+}
+
 
 .storefront.night-theme .topbar {
   background: rgba(15, 23, 42, 0.94);
