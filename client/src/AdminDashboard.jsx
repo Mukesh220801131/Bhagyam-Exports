@@ -568,7 +568,7 @@ function AdminLogin({ onLogin }) {
           <input
             autoComplete="email"
             onChange={(event) => setForm((value) => ({ ...value, email: event.target.value }))}
-            placeholder="admin@fashionstore.com"
+            placeholder="admin@bhagyamexports.com"
             required
             type="email"
             value={form.email}
@@ -612,7 +612,7 @@ function AdminSidebar({ activeView, darkMode, onLogout, onNavigate, onToggleThem
       <div className="admin-sidebar-brand">
         <FiBox aria-hidden="true" />
         <div>
-          <strong>FashionStore</strong>
+          <strong>Bhagyam Exports</strong>
           <span>{user?.name || "Admin"}</span>
         </div>
       </div>
@@ -1872,7 +1872,7 @@ function CouponsView() {
 
 function SettingsView({ darkMode, setDarkMode }) {
   const [settings, setSettings] = useState({
-    storeName: "FashionStore",
+    storeName: "Bhagyam Exports",
     logo: "",
     address: "",
     phone: "",
