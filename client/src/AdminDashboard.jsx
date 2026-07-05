@@ -1871,20 +1871,37 @@ function CouponsView() {
 }
 
 function SettingsView({ darkMode, setDarkMode }) {
-  const [settings, setSettings] = useState({
-    storeName: "Bhagyam Exports",
-    logo: "",
-    address: "",
-    phone: "",
-    email: "",
-    socialLinks: "",
-    currency: "INR",
-    gst: "",
-    shippingCharges: "",
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem("bhagyam_exports_admin_settings");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return {
+      storeName: "Bhagyam Exports",
+      logo: "",
+      address: "",
+      phone: "",
+      email: "",
+      socialLinks: "",
+      currency: "INR",
+      gst: "",
+      shippingCharges: "",
+    };
   });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      localStorage.setItem("bhagyam_exports_admin_settings", JSON.stringify(settings));
+      toast.success("Settings saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save settings");
+    }
+  };
+
   return (
     <section className="admin-view">
-      <form className="admin-panel admin-settings" onSubmit={(event) => { event.preventDefault(); toast.success("Settings UI saved"); }}>
+      <form className="admin-panel admin-settings" onSubmit={handleSubmit}>
         <div className="admin-panel-heading"><h2>Store Settings</h2></div>
         {Object.keys(settings).map((key) => (
           <TextField
