@@ -134,10 +134,40 @@ const loadOrderItems = async (cartItems = []) => {
 };
 
 // Load coupon rule asynchronously
-const getCouponRule = async (couponCode) => {
+const getCouponRule = async (couponCode, user = null, email = "") => {
   if (!couponCode) return null;
   const normalized = normalizeCoupon(couponCode);
   
+  // Special logic for WELCOME10
+  if (normalized === "WELCOME10") {
+    try {
+      const query = [];
+      if (user && user._id) {
+        query.push({ user: user._id });
+      }
+      const targetEmail = (email || user?.email || "").toString().trim().toLowerCase();
+      if (targetEmail) {
+        query.push({ "customer.email": targetEmail });
+      }
+
+      if (query.length > 0) {
+        const Order = require("../models/Order");
+        const existingOrder = await Order.findOne({
+          $or: query,
+          "payment.status": { $ne: "Failed" }
+        });
+        if (existingOrder) {
+          throw new Error("WELCOME10 coupon is only valid for your first order.");
+        }
+      }
+    } catch (e) {
+      if (e.message && e.message.includes("first order")) {
+        throw e;
+      }
+      console.error("Welcome coupon verification failed", e);
+    }
+  }
+
   // Try database lookup first
   try {
     const Coupon = require("../models/Coupon");
@@ -196,7 +226,7 @@ const buildOrderPayload = async ({ cartItems, address, paymentMethod, couponCode
   }
 
   const items = await loadOrderItems(cartItems);
-  const couponRule = await getCouponRule(couponCode);
+  const couponRule = await getCouponRule(couponCode, user, customer.email);
   const totals = buildTotals(items, couponRule, couponCode);
 
   return {
@@ -228,7 +258,8 @@ const decrementStock = async (items) => {
 const quoteOrder = async (req, res) => {
   try {
     const items = await loadOrderItems(req.body.items || req.body.cartItems);
-    const couponRule = await getCouponRule(req.body.couponCode);
+    const email = req.body.email || req.body.address?.email || "";
+    const couponRule = await getCouponRule(req.body.couponCode, req.user, email);
     const totals = buildTotals(items, couponRule, req.body.couponCode);
 
     let dbCodes = [];

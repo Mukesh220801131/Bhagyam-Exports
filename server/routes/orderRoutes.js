@@ -19,7 +19,7 @@ const { authorizeAdmin, optionalAuth } = require("../middleware/authMiddleware")
 
 const router = express.Router();
 
-router.post("/quote", quoteOrder);
+router.post("/quote", optionalAuth, quoteOrder);
 router.post("/cod", optionalAuth, createCodOrder);
 router.post("/razorpay/create", optionalAuth, createRazorpayOrder);
 router.post("/razorpay/verify", verifyRazorpayPayment);

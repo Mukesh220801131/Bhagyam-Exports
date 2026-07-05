@@ -202,6 +202,7 @@ function CartPage({
               color: item.color,
             })),
             couponCode: appliedCoupon,
+            email: address.email || "",
           },
           { signal: controller.signal }
         );
