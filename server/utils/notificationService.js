@@ -39,7 +39,7 @@ const formatDate = (value) =>
       }).format(new Date(value))
     : "Updating soon";
 
-const orderAmount = (order) => `Rs. ${formatPrice(order.total)}`;
+const orderAmount = (order) => `₹ ${formatPrice(order.total)}`;
 
 const getTrackingLink = (order) => `${env.storefrontUrl.replace(/\/$/, "")}/track/${order.orderNumber}`;
 
@@ -61,14 +61,14 @@ const normalizePhone = (value = "", includePlus = false) => {
 
 const itemSummaryText = (order) =>
   order.items
-    .map((item) => `${item.name} x ${item.quantity} - Rs. ${formatPrice(item.lineTotal)}`)
+    .map((item) => `${item.name} x ${item.quantity} - ₹ ${formatPrice(item.lineTotal)}`)
     .join("\n");
 
 const itemSummaryHtml = (order) =>
   order.items
     .map(
       (item) =>
-        `<li><strong>${item.name}</strong> x ${item.quantity} - Rs. ${formatPrice(item.lineTotal)}</li>`
+        `<li><strong>${item.name}</strong> x ${item.quantity} - ₹ ${formatPrice(item.lineTotal)}</li>`
     )
     .join("");
 

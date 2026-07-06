@@ -43,8 +43,8 @@ function WishlistPage({ items, onMoveToCart, onRemoveWishlist }) {
                   <h3>{product.name}</h3>
                 </div>
                 <div className="price-row">
-                  <strong>Rs. {formatPrice(product.discountPrice || product.price)}</strong>
-                  {product.discountPrice < product.price && <span>Rs. {formatPrice(product.price)}</span>}
+                  <strong>₹ {formatPrice(product.discountPrice || product.price)}</strong>
+                  {product.discountPrice < product.price && <span>₹ {formatPrice(product.price)}</span>}
                 </div>
                 <div className="wishlist-actions">
                   <button className="cart-button" onClick={() => onMoveToCart(product)} type="button">

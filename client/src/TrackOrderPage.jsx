@@ -44,7 +44,7 @@ function TrackOrderPage() {
       [[
         `Invoice: ${invoice.invoiceNumber}`,
         `Order: ${invoice.orderNumber}`,
-        `Total: Rs. ${formatPrice(invoice.total)}`,
+        `Total: ₹ ${formatPrice(invoice.total)}`,
       ].join("\n")],
       { type: "text/plain;charset=utf-8" }
     );
@@ -103,7 +103,7 @@ function TrackOrderPage() {
             <div className="track-summary">
               <span><FiPackage /> {order.status}</span>
               <span>ETA {formatDate(order.estimatedDelivery)}</span>
-              <span>Rs. {formatPrice(order.total)}</span>
+              <span>₹ {formatPrice(order.total)}</span>
             </div>
             <div className="checkout-actions">
               <button className="secondary-action" onClick={downloadInvoice} type="button">

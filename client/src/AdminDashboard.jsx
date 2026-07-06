@@ -739,14 +739,14 @@ function NotificationDropdown({
 function DashboardView({ dashboard, orders, products }) {
   const overview = dashboard?.overview || {};
   const cards = [
-    ["Revenue", `Rs. ${formatPrice(overview.revenue || 0)}`, FiShoppingBag],
+    ["Revenue", `₹ ${formatPrice(overview.revenue || 0)}`, FiShoppingBag],
     ["Orders", overview.totalOrders || 0, FiShoppingBag],
     ["Pending Orders", overview.pendingOrders || 0, FiRefreshCcw],
     ["Customers", overview.totalUsers || 0, FiUsers],
     ["Total Products", overview.totalProducts || 0, FiPackage],
     ["Low Stock Products", overview.lowStockProducts || 0, FiBox],
     ["Out of Stock Products", overview.outOfStock || 0, FiX],
-    ["Avg Order Value", `Rs. ${formatPrice(overview.averageOrderValue || 0)}`, FiTag],
+    ["Avg Order Value", `₹ ${formatPrice(overview.averageOrderValue || 0)}`, FiTag],
   ];
   const monthly = dashboard?.salesAnalytics?.length
     ? dashboard.salesAnalytics
@@ -834,7 +834,7 @@ function DashboardView({ dashboard, orders, products }) {
                 <div className="admin-order-avatar">{order.customer?.fullName?.slice(0, 1) || "C"}</div>
                 <div>
                   <strong>{order.orderNumber}</strong>
-                  <span>{order.customer?.fullName || "Customer"} / Rs. {formatPrice(order.total)}</span>
+                  <span>{order.customer?.fullName || "Customer"} / ₹ {formatPrice(order.total)}</span>
                 </div>
                 <em className={`status-pill ${String(order.status).toLowerCase().replace(/\s+/g, '-')}`}>{order.status}</em>
               </article>
@@ -851,7 +851,7 @@ function DashboardView({ dashboard, orders, products }) {
                 <img src={product.image} alt={product.name} />
                 <div>
                   <strong>{product.name}</strong>
-                  <span>{product.quantity} sold / Rs. {formatPrice(product.revenue)}</span>
+                  <span>{product.quantity} sold / ₹ {formatPrice(product.revenue)}</span>
                 </div>
                 <em>{product.brand}</em>
               </article>
@@ -1148,8 +1148,8 @@ function ProductsView({
                       <td>{product.sku || product._id.slice(-8).toUpperCase()}</td>
                       <td>{product.brand}</td>
                       <td>{product.category}</td>
-                      <td>Rs. {formatPrice(product.price)}</td>
-                      <td>Rs. {formatPrice(product.discountPrice || product.price)}</td>
+                      <td>₹ {formatPrice(product.price)}</td>
+                      <td>₹ {formatPrice(product.discountPrice || product.price)}</td>
                       <td><span className={product.stock <= 10 ? "stock-pill low" : "stock-pill"}>{product.stock}</span></td>
                       <td><span className={`status-pill ${product.status || "active"}`}>{product.status || "active"}</span></td>
                       <td>{product.rating || 0}</td>
@@ -1701,7 +1701,7 @@ function OrdersView({ authHeaders, loadOrders, orderMeta, orderQuery, orders, re
                     <span>{order.customer?.email}</span>
                   </td>
                   <td>{order.items?.length || 0} item(s)</td>
-                  <td>Rs. {formatPrice(order.total)}</td>
+                  <td>₹ {formatPrice(order.total)}</td>
                   <td><span className={`status-pill ${String(order.status).toLowerCase().replace(/\s+/g, '-')}`}>{order.status}</span></td>
                   <td>{order.payment?.method} / {order.payment?.status}</td>
                   <td>{new Date(order.estimatedDelivery).toLocaleDateString("en-IN")}</td>
@@ -1811,7 +1811,7 @@ function OrdersView({ authHeaders, loadOrders, orderMeta, orderQuery, orders, re
               <div>
                 <strong>Payment</strong>
                 <span>{expandedOrder.payment?.method} / {expandedOrder.payment?.status}</span>
-                <span>Total Rs. {formatPrice(expandedOrder.total)}</span>
+                <span>Total ₹ {formatPrice(expandedOrder.total)}</span>
               </div>
             </div>
             <div className="admin-list">
@@ -1822,7 +1822,7 @@ function OrdersView({ authHeaders, loadOrders, orderMeta, orderQuery, orders, re
                     <strong>{item.name}</strong>
                     <span>Qty {item.quantity} / Size {item.size || "One Size"}</span>
                   </div>
-                  <em>Rs. {formatPrice(item.lineTotal)}</em>
+                  <em>₹ {formatPrice(item.lineTotal)}</em>
                 </article>
               ))}
             </div>
@@ -1861,7 +1861,7 @@ function CustomersView({ orders }) {
         customer.customer,
         customer.email,
         customer.recentOrder,
-        `Rs. ${formatPrice(customer.totalPurchase)}`,
+        `₹ ${formatPrice(customer.totalPurchase)}`,
         customer.orders,
         customer.status,
       ])}
@@ -2006,8 +2006,8 @@ function CouponsView() {
                   <tr key={c._id}>
                     <td style={{ fontWeight: "bold", color: "#0ea5e9" }}>{c.code}</td>
                     <td>{c.type}</td>
-                    <td>{c.type === "Percentage" || c.type === "percent" ? `${c.value}%` : `Rs. ${c.value}`}</td>
-                    <td>Rs. {c.minimum || 0}</td>
+                    <td>{c.type === "Percentage" || c.type === "percent" ? `${c.value}%` : `₹ ${c.value}`}</td>
+                    <td>₹ {c.minimum || 0}</td>
                     <td>
                       <div style={{ display: "flex", gap: "8px" }}>
                         <button

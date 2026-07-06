@@ -264,8 +264,8 @@ function ProductDetail({ isWishlisted, onAddToCart, onToggleWishlist, cartItems 
           </div>
           <p className="premium-short">{product.shortDescription || product.description}</p>
           <div className="price-row detail-price-row">
-            <strong>Rs. {formatPrice(product.discountPrice || product.price)}</strong>
-            {discount && <span>Rs. {formatPrice(product.price)}</span>}
+            <strong>₹ {formatPrice(product.discountPrice || product.price)}</strong>
+            {discount && <span>₹ {formatPrice(product.price)}</span>}
           </div>
 
           {product.sizes?.length > 0 && (
@@ -540,8 +540,8 @@ function ProductRail({ products, title }) {
               <span className="product-brand">{product.brand}</span>
               <h3>{product.name}</h3>
               <div className="price-row">
-                <strong>Rs. {formatPrice(product.discountPrice || product.price)}</strong>
-                {product.discountPrice < product.price && <span>Rs. {formatPrice(product.price)}</span>}
+                <strong>₹ {formatPrice(product.discountPrice || product.price)}</strong>
+                {product.discountPrice < product.price && <span>₹ {formatPrice(product.price)}</span>}
               </div>
             </div>
           </article>

@@ -692,7 +692,7 @@ function App() {
                     }}
                     type="button"
                   >
-                    Under Rs. 500
+                    Under ₹ 500
                   </button>
                   <button
                     className={selectedPriceRange === "500-1000" ? "filter-link active" : "filter-link"}
@@ -702,7 +702,7 @@ function App() {
                     }}
                     type="button"
                   >
-                    Rs. 500 - Rs. 1,000
+                    ₹ 500 - ₹ 1,000
                   </button>
                   <button
                     className={selectedPriceRange === "1000-2000" ? "filter-link active" : "filter-link"}
@@ -712,7 +712,7 @@ function App() {
                     }}
                     type="button"
                   >
-                    Rs. 1,000 - Rs. 2,000
+                    ₹ 1,000 - ₹ 2,000
                   </button>
                   <button
                     className={selectedPriceRange === "above-2000" ? "filter-link active" : "filter-link"}
@@ -722,7 +722,7 @@ function App() {
                     }}
                     type="button"
                   >
-                    Rs. 2,000 & Above
+                    ₹ 2,000 & Above
                   </button>
                 </div>
               </div>
@@ -1028,7 +1028,7 @@ function App() {
                           <img src={product.thumbnail || product.images?.[0]} alt={product.name} />
                           <div>
                             <span className="search-product-name">{product.name}</span>
-                            <span className="search-product-price">Rs. {product.discountPrice || product.price}</span>
+                            <span className="search-product-price">₹ {product.discountPrice || product.price}</span>
                           </div>
                         </Link>
                       ))}
@@ -1223,8 +1223,8 @@ function ProductCard({ compact, isWishlisted, onAddToCart, onToggleWishlist, pro
           <span>{product.reviews} reviews</span>
         </div>
         <div className="price-row">
-          <strong>Rs. {formatPrice(product.discountPrice || product.price)}</strong>
-          {product.discountPrice < product.price && <span>Rs. {formatPrice(product.price)}</span>}
+          <strong>₹ {formatPrice(product.discountPrice || product.price)}</strong>
+          {product.discountPrice < product.price && <span>₹ {formatPrice(product.price)}</span>}
         </div>
         {quantityInCart > 0 ? (
           <div className="quantity-controls">

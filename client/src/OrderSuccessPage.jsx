@@ -48,14 +48,14 @@ function OrderSuccessPage() {
       `Customer: ${invoice.customer.fullName}`,
       "",
       ...invoice.items.map(
-        (item) => `${item.name} x ${item.quantity} - Rs. ${formatPrice(item.lineTotal)}`
+        (item) => `${item.name} x ${item.quantity} - ₹ ${formatPrice(item.lineTotal)}`
       ),
       "",
-      `Subtotal: Rs. ${formatPrice(invoice.subtotal)}`,
-      `Discount: Rs. ${formatPrice(invoice.discount)}`,
-      `Shipping: Rs. ${formatPrice(invoice.shippingFee)}`,
-      `Tax: Rs. ${formatPrice(invoice.tax)}`,
-      `Total: Rs. ${formatPrice(invoice.total)}`,
+      `Subtotal: ₹ ${formatPrice(invoice.subtotal)}`,
+      `Discount: ₹ ${formatPrice(invoice.discount)}`,
+      `Shipping: ₹ ${formatPrice(invoice.shippingFee)}`,
+      `Tax: ₹ ${formatPrice(invoice.tax)}`,
+      `Total: ₹ ${formatPrice(invoice.total)}`,
     ];
     const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -112,7 +112,7 @@ function OrderSuccessPage() {
             {order.items.map((item) => (
               <div key={`${item.product}-${item.size}`}>
                 <span>{item.name} x {item.quantity}</span>
-                <strong>Rs. {formatPrice(item.lineTotal)}</strong>
+                <strong>₹ {formatPrice(item.lineTotal)}</strong>
               </div>
             ))}
           </div>

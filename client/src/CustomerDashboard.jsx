@@ -253,8 +253,8 @@ function CustomerDashboard({ onMoveToCart, onRemoveWishlist, wishlist }) {
         [
           `Invoice: ${invoice.invoiceNumber}`,
           `Order: ${invoice.orderNumber}`,
-          `Total: Rs. ${formatPrice(invoice.total)}`,
-          ...invoice.items.map((item) => `${item.name} x ${item.quantity} - Rs. ${formatPrice(item.lineTotal)}`),
+          `Total: ₹ ${formatPrice(invoice.total)}`,
+          ...invoice.items.map((item) => `${item.name} x ${item.quantity} - ₹ ${formatPrice(item.lineTotal)}`),
         ].join("\n"),
       ],
       { type: "text/plain;charset=utf-8" }
@@ -591,7 +591,7 @@ function WishlistPanel({ items, onMoveToCart, onRemoveWishlist }) {
             <img src={product.thumbnail || product.images?.[0]} alt={product.name} />
             <div>
               <strong>{product.name}</strong>
-              <span>{product.brand} / Rs. {formatPrice(product.discountPrice || product.price)}</span>
+              <span>{product.brand} / ₹ {formatPrice(product.discountPrice || product.price)}</span>
             </div>
             <button onClick={() => onMoveToCart(product)} type="button"><FiShoppingBag /></button>
             <button onClick={() => onRemoveWishlist(product._id)} type="button"><FiX /></button>
@@ -624,7 +624,7 @@ function OrdersPanel({ cancelOrder, returnOrder, downloadInvoice, orders }) {
               <span>{formatDate(order.createdAt)} / {order.status} / {order.payment.method}</span>
             </div>
             <div>
-              <strong>Rs. {formatPrice(order.total)}</strong>
+              <strong>₹ {formatPrice(order.total)}</strong>
               <span>ETA {formatDate(order.estimatedDelivery)}</span>
             </div>
             <button onClick={() => downloadInvoice(order.orderNumber)} type="button"><FiDownload /> Invoice</button>
@@ -689,9 +689,9 @@ function CouponsPanel() {
     <div className="coupon-grid">
       <PanelTitle eyebrow="Coupons" title="Available offers" />
       {[
-        ["WELCOME10", "10% off", "Above Rs. 499"],
-        ["FASHION20", "20% off", "Above Rs. 1,499"],
-        ["SUMMER25", "25% off", "Above Rs. 2,499"],
+        ["WELCOME10", "10% off", "Above ₹ 499"],
+        ["FASHION20", "20% off", "Above ₹ 1,499"],
+        ["SUMMER25", "25% off", "Above ₹ 2,499"],
       ].map(([code, value, minimum]) => (
         <article className="coupon-ticket" key={code}>
           <strong>{code}</strong>
@@ -715,7 +715,7 @@ function RecentPanel({ products }) {
             <img src={product.thumbnail || product.images?.[0]} alt={product.name} />
             <div>
               <strong>{product.name}</strong>
-              <span>{product.brand} / Rs. {formatPrice(product.discountPrice || product.price)}</span>
+              <span>{product.brand} / ₹ {formatPrice(product.discountPrice || product.price)}</span>
             </div>
           </article>
         ))

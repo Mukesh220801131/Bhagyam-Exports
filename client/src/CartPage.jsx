@@ -35,9 +35,9 @@ const getCookie = (name) => {
 };
 
 const coupons = {
-  WELCOME10: "10% off above Rs. 499",
-  FASHION20: "20% off above Rs. 1,499",
-  SUMMER25: "25% off above Rs. 2,499",
+  WELCOME10: "10% off above ₹ 499",
+  FASHION20: "20% off above ₹ 1,499",
+  SUMMER25: "25% off above ₹ 2,499",
 };
 
 const emptyAddress = {
@@ -521,8 +521,8 @@ function CartStep({ cartItems, onClearCart, onContinue, onRemoveFromCart, onUpda
                 <span>Qty: {item.quantity}</span>
               </div>
               <div className="price-row">
-                <strong>Rs. {formatPrice(item.discountPrice || item.price)}</strong>
-                {item.discountPrice < item.price && <span>Rs. {formatPrice(item.price)}</span>}
+                <strong>₹ {formatPrice(item.discountPrice || item.price)}</strong>
+                {item.discountPrice < item.price && <span>₹ {formatPrice(item.price)}</span>}
               </div>
             </div>
             <div className="cart-item-controls">
@@ -690,29 +690,29 @@ function OrderSummary({ appliedCoupon, cartItems, totals }) {
         {cartItems.map((item) => (
           <div key={`${item.productId}-${item.size || "one"}`}>
             <span>{item.name} x {item.quantity}</span>
-            <strong>Rs. {formatPrice((item.discountPrice || item.price) * item.quantity)}</strong>
+            <strong>₹ {formatPrice((item.discountPrice || item.price) * item.quantity)}</strong>
           </div>
         ))}
       </div>
       <div className="summary-row">
         <span>Subtotal</span>
-        <strong>Rs. {formatPrice(totals.subtotal)}</strong>
+        <strong>₹ {formatPrice(totals.subtotal)}</strong>
       </div>
       <div className="summary-row">
         <span>Discount {appliedCoupon && `(${appliedCoupon})`}</span>
-        <strong>- Rs. {formatPrice(totals.discount)}</strong>
+        <strong>- ₹ {formatPrice(totals.discount)}</strong>
       </div>
       <div className="summary-row">
         <span>Shipping</span>
-        <strong>{totals.shippingFee ? `Rs. ${formatPrice(totals.shippingFee)}` : "Free"}</strong>
+        <strong>{totals.shippingFee ? `₹ ${formatPrice(totals.shippingFee)}` : "Free"}</strong>
       </div>
       <div className="summary-row">
         <span>Tax</span>
-        <strong>Rs. {formatPrice(totals.tax)}</strong>
+        <strong>₹ {formatPrice(totals.tax)}</strong>
       </div>
       <div className="summary-row total">
         <span>Total</span>
-        <strong>Rs. {formatPrice(totals.total)}</strong>
+        <strong>₹ {formatPrice(totals.total)}</strong>
       </div>
     </aside>
   );
